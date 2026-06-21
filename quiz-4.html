@@ -1,0 +1,81 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Quiz — Partie IV — Construire le continu, compter l’infini</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet"><style>*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%}
+body{background:radial-gradient(140% 120% at 50% 0%,#15203A 0%,#0A0E18 60%);font-family:'Spectral',serif;color:#EAE5D8;min-height:100vh}
+.top{display:flex;align-items:center;justify-content:space-between;padding:18px 26px;border-bottom:1px solid #1E2740;position:sticky;top:0;background:rgba(10,14,24,.86);backdrop-filter:blur(8px);z-index:5}
+.brand{font:500 14px/1.2 'IBM Plex Mono',monospace;color:#AEB8D0;display:flex;align-items:center;gap:10px;min-width:0}
+.brand .inf{font-family:'Spectral',serif;font-size:22px;color:#E9D29A}
+.brand b{color:#F0E9D8;font-weight:600}
+.brand .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tr{display:flex;gap:11px;flex:0 0 auto}
+.lnk{font:600 12px/1 'IBM Plex Mono',monospace;letter-spacing:.05em;text-decoration:none;padding:10px 15px;border-radius:7px;display:inline-flex;align-items:center;gap:7px;transition:.18s}
+.lnk.vid{color:#9FB2D6;border:1px solid #2A3350;background:#171C2B}
+.lnk.vid:hover{border-color:#3A466A;color:#C7D0E4}
+.lnk.menu{color:#E9D29A;border:1px solid #4A4326;background:#171C2B}
+.lnk.menu:hover{background:#1E2436;border-color:#6A5E33}
+.wrap{max-width:760px;margin:0 auto;padding:40px 24px 90px}
+.pbar{height:5px;background:#1A2236;border-radius:3px;overflow:hidden;margin-bottom:30px}
+.pbar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,#E9D29A,#C9A14E);transition:width .3s}
+.kick{font:600 12px/1 'IBM Plex Mono',monospace;letter-spacing:.3em;text-transform:uppercase;color:#C9A14E}
+.card{background:linear-gradient(#121A2E,#0E1626);border:1px solid #233052;border-radius:16px;padding:34px 32px}
+.qnum{font:600 12px/1 'IBM Plex Mono',monospace;letter-spacing:.14em;color:#7E88A2;text-transform:uppercase}
+.qtext{margin-top:14px;font:600 25px/1.32 'Spectral',serif;color:#F4EEDF;text-wrap:pretty}
+.qtext em{color:#E9D29A;font-style:italic}
+.opts{margin-top:26px;display:flex;flex-direction:column;gap:12px}
+.opt{display:flex;align-items:flex-start;gap:13px;text-align:left;font:400 18px/1.45 'Spectral',serif;color:#D8DCE6;background:#161D30;border:1.5px solid #283450;border-radius:11px;padding:15px 17px;cursor:pointer;transition:.15s;width:100%}
+.opt:hover:not(:disabled){border-color:#46557E;background:#1A2236}
+.opt .ltr{flex:0 0 auto;width:26px;height:26px;border-radius:7px;background:#222C46;border:1px solid #36456B;display:flex;align-items:center;justify-content:center;font:600 13px/1 'IBM Plex Mono',monospace;color:#AEB8D0}
+.opt:disabled{cursor:default}
+.opt.correct{border-color:#3E9B6E;background:rgba(45,120,80,.16)}
+.opt.correct .ltr{background:#2F8A5B;border-color:#3E9B6E;color:#EAF6EE}
+.opt.wrong{border-color:#B5564A;background:rgba(150,50,40,.14)}
+.opt.wrong .ltr{background:#9A3E32;border-color:#B5564A;color:#FBEAE6}
+.opt.dim{opacity:.5}
+.exp{margin-top:20px;padding:16px 18px;border-radius:11px;background:#101826;border:1px solid #233052;font:400 16px/1.55 'Spectral',serif;color:#B9C2D6;display:none}
+.exp.show{display:block}
+.exp em{color:#E9D29A;font-style:italic}
+.exp .verdict{font:600 13px/1 'IBM Plex Mono',monospace;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;display:block}
+.exp .ok{color:#5FC08A}.exp .ko{color:#E08A7E}
+.nav{margin-top:26px;display:flex;justify-content:flex-end}
+.btn{font:600 14px/1 'IBM Plex Mono',monospace;letter-spacing:.03em;padding:14px 26px;border-radius:10px;cursor:pointer;border:1px solid #C9A14E;background:linear-gradient(#F0D79A,#E3C173);color:#1A1406;transition:.16s}
+.btn:hover{background:linear-gradient(#F5DFA8,#E9C982)}
+.btn:disabled{opacity:.4;cursor:default;filter:grayscale(.3)}
+.btn.ghost{background:#1A2030;color:#D6DAE6;border-color:#2A3350}
+.btn.ghost:hover{background:#222A3E;border-color:#3A466A}
+.intro{text-align:center;padding:30px 10px}
+.intro .inf{font-size:60px;color:#E9D29A}
+.intro h1{margin-top:14px;font:600 clamp(30px,4.6vw,44px)/1.1 'Spectral',serif;color:#F4EEDF}
+.intro .sub{margin-top:12px;font:italic 400 19px/1.4 'Spectral',serif;color:#9FB2D6}
+.intro p{margin:20px auto 0;max-width:520px;font:400 17px/1.6 'Spectral',serif;color:#AEB8D0}
+.namebox{margin:26px auto 0;max-width:420px;text-align:left}
+.namebox label{font:600 11px/1 'IBM Plex Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#7E88A2}
+.namebox input{margin-top:9px;width:100%;font:400 17px/1.4 'Spectral',serif;color:#F0E9D8;background:#161D30;border:1.5px solid #283450;border-radius:10px;padding:13px 15px}
+.namebox input:focus{outline:none;border-color:#46557E}
+.start{margin-top:26px}
+.res{text-align:center;padding:20px 6px}
+.scorebig{font:700 clamp(64px,12vw,108px)/1 'Spectral',serif;color:#E9D29A}
+.scoremax{font:400 .42em/1 'Spectral',serif;color:#7E88A2}
+.res h2{margin-top:6px;font:600 28px/1.2 'Spectral',serif;color:#F4EEDF}
+.res .msg{margin-top:14px;font:400 18px/1.55 'Spectral',serif;color:#B9C2D6;max-width:520px;margin-left:auto;margin-right:auto}
+.reslist{margin:28px auto 0;max-width:560px;text-align:left;display:flex;flex-direction:column;gap:8px}
+.rrow{display:flex;align-items:center;gap:11px;font:400 15px/1.4 'Spectral',serif;color:#C2CADA}
+.rrow .mk{flex:0 0 auto;width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font:600 12px/1 'IBM Plex Mono',monospace}
+.rrow .mk.y{background:#2F8A5B;color:#EAF6EE}.rrow .mk.n{background:#9A3E32;color:#FBEAE6}
+.resbtns{margin-top:32px;display:flex;gap:13px;justify-content:center;flex-wrap:wrap}
+.sent{margin-top:16px;font:500 13px/1.5 'IBM Plex Mono',monospace;color:#7E88A2}
+@media (max-width:600px){.card{padding:24px 18px}.qtext{font-size:21px}.opt{font-size:16px}}</style></head><body><header class="top"><div class="brand"><span class="inf">∞</span><span class="nm">Quiz &middot; <b>Partie IV</b> &mdash; Construire le continu, compter l’infini</span></div><div class="tr"><a class="lnk vid" href="partie-4.html">▶ Vidéo</a><a class="lnk menu" href="index.html">⌂ Menu</a></div></header><div class="pbar" style="position:fixed;left:0;top:61px;width:100%;height:4px;margin:0;border-radius:0;z-index:4"><i id="bar"></i></div><main class="wrap"><div id="app"></div></main><script>var ROMAN,TITLE;window.__Q=[{"q":"En quoi consiste une <em>coupure de Dedekind</em> ?","opts":["Couper ℚ en deux classes (trop petits / trop grands), la frontière définissant un nombre","Arrondir un irrationnel","Supprimer les négatifs","Couper un nombre en deux moitiés"],"a":0,"exp":"On coupe les rationnels en deux classes ; la frontière entre elles définit un nombre, là où ℚ avait un trou."},{"q":"Comment Dedekind définit-il √2 ?","opts":["Comme la borne supérieure des rationnels dont le carré est < 2","Comme 1,41421356","Comme la moitié de 2","Comme une fraction approchée"],"a":0,"exp":"√2 = sup{ x∈ℚ : x²<2 } : c'est exactement la frontière de la coupure, l'emplacement précis du trou."},{"q":"Quel est l'ordre correct de l'« escalier » des ensembles de nombres ?","opts":["ℂ ⊂ ℝ ⊂ ℚ ⊂ ℤ ⊂ ℕ","ℕ ⊂ ℤ ⊂ ℚ ⊂ ℝ ⊂ ℂ","ℕ ⊂ ℚ ⊂ ℤ ⊂ ℝ ⊂ ℂ","ℝ ⊂ ℚ ⊂ ℤ ⊂ ℕ ⊂ ℂ"],"a":1,"exp":"ℕ (compter) ⊂ ℤ (soustraire) ⊂ ℚ (diviser) ⊂ ℝ (mesurer le continu) ⊂ ℂ (racines de négatifs)."},{"q":"Quelle opération force le passage de ℚ à ℝ ?","opts":["La soustraction","Mesurer le continu (limites, racines)","L'addition","La division"],"a":1,"exp":"Soustraire force ℤ, diviser force ℚ, mais mesurer le continu — limites et racines comme √2 — force ℝ."},{"q":"Qu'est-ce qu'un nombre <em>algébrique</em> ?","opts":["Un nombre négatif","Un nombre toujours irrationnel","Un nombre solution d'une équation polynomiale à coefficients entiers","Un nombre transcendant"],"a":2,"exp":"Algébrique = attrapé par une équation à coefficients entiers (ex. : √2 vérifie x² = 2). φ et ∛5 le sont aussi."},{"q":"Lesquels de ces nombres sont <em>transcendants</em> ?","opts":["√2 et φ","∛5 et √2","1/2 et 3/4","π et e"],"a":3,"exp":"π (le nombre du cercle) et e (celui de la croissance) échappent à toute équation à coefficients entiers : ce sont des transcendants."},{"q":"Que démontre Cantor à propos de ℕ et ℝ ?","opts":["ℕ et ℝ ont la même taille","ℕ est plus grand que ℝ","ℝ est dénombrable","ℕ est strictement plus petit que ℝ (|ℕ| < |ℝ|)"],"a":3,"exp":"ℕ est dénombrable (taille ℵ₀), mais ℝ ne l'est pas : |ℕ| < |ℝ|. Il existe donc plusieurs tailles d'infini."},{"q":"L'ensemble des nombres algébriques est…","opts":["égal à ℝ","dénombrable (pas plus nombreux que ℕ)","non dénombrable","fini"],"a":1,"exp":"Cantor montre que les algébriques sont dénombrables : on peut les ranger en une liste numérotée, comme les entiers."},{"q":"Quelle conséquence vertigineuse en tire-t-on ?","opts":["Presque tous les réels sont transcendants, alors qu'on peine à en exhiber un","ℝ est fini","Presque tous les réels sont algébriques","Il n'y a pas de transcendants"],"a":0,"exp":"Les algébriques étant peu nombreux et les réels innombrables, presque tous les réels sont transcendants — pourtant très durs à exhiber."},{"q":"Quel « fil rouge » relie les quatre parties du cours ?","opts":["Le calcul des aires","Les équations du second degré","L'infini : apprivoisé, puis frolé, puis rendu rigoureux, puis compté","La géométrie du triangle"],"a":2,"exp":"Une seule idée monte en puissance : l'infini potentiel → frôler sans atteindre → la rigueur des ε → les tailles d'infini de Cantor."}];window.ROMAN="IV";window.TITLE="Construire le continu, compter l’infini";ROMAN=window.ROMAN;TITLE=window.TITLE;(function(){
+var PART=4;var EMAIL='renaudfabbri@gmail.com';
+var Q=window.__Q;var N=Q.length;
+var state={i:0,answers:new Array(N).fill(-1),locked:new Array(N).fill(false),name:''};
+var app=document.getElementById('app');var bar=document.getElementById('bar');
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+function setBar(p){bar.style.width=p+'%';}
+function intro(){setBar(0);app.innerHTML='<div class="intro"><div class="inf">\u221e</div><h1>Quiz \u2014 Partie '+ROMAN+'</h1><div class="sub">'+TITLE+'</div><p>Dix questions pour v\u00e9rifier ta compr\u00e9hension de cette partie. Choisis une r\u00e9ponse, re\u00e7ois une explication imm\u00e9diate, puis passe \u00e0 la suivante.</p><div class="namebox"><label>Ton nom (pour la remont\u00e9e au professeur)</label><input id="nm" type="text" placeholder="Pr\u00e9nom Nom" autocomplete="name"></div><div class="start"><button class="btn" id="go">Commencer le quiz \u203a</button></div></div>';document.getElementById('go').onclick=function(){state.name=(document.getElementById('nm').value||'').trim();state.i=0;question();};var nm=document.getElementById('nm');nm.addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('go').click();});}
+function question(){var i=state.i;var q=Q[i];setBar(Math.round(i/N*100));var locked=state.locked[i];var chosen=state.answers[i];var opts='';for(var k=0;k<4;k++){var cls='opt';if(locked){if(k===q.a)cls+=' correct';else if(k===chosen)cls+=' wrong';else cls+=' dim';}var L=String.fromCharCode(65+k);opts+='<button class="'+cls+'" data-k="'+k+'" '+(locked?'disabled':'')+'><span class="ltr">'+L+'</span><span>'+q.opts[k]+'</span></button>';}var verdict='';if(locked){var ok=chosen===q.a;verdict='<span class="verdict '+(ok?'ok':'ko')+'">'+(ok?'\u2713 Correct':'\u2717 Incorrect')+'</span>';}var nextLabel=(i===N-1)?'Voir le r\u00e9sultat \u203a':'Question suivante \u203a';app.innerHTML='<div class="pbar"><i style="width:'+Math.round(i/N*100)+'%"></i></div><div class="card"><div class="qnum">Question '+(i+1)+' sur '+N+'</div><div class="qtext">'+q.q+'</div><div class="opts">'+opts+'</div><div class="exp'+(locked?' show':'')+'" id="exp">'+verdict+q.exp+'</div><div class="nav"><button class="btn" id="next" '+(locked?'':'disabled')+'>'+nextLabel+'</button></div></div>';var btns=app.querySelectorAll('.opt');for(var b=0;b<btns.length;b++){btns[b].onclick=function(){var k=parseInt(this.getAttribute('data-k'),10);choose(k);};}document.getElementById('next').onclick=function(){if(!state.locked[state.i])return;if(state.i===N-1){results();}else{state.i++;question();window.scrollTo(0,0);}};}
+function choose(k){var i=state.i;if(state.locked[i])return;state.answers[i]=k;state.locked[i]=true;question();}
+function score(){var s=0;for(var i=0;i<N;i++)if(state.answers[i]===Q[i].a)s++;return s;}
+function msgFor(s){if(s>=9)return 'Ma\u00eetrise remarquable. Tu peux passer \u00e0 la partie suivante en confiance.';if(s>=7)return 'Tr\u00e8s bon r\u00e9sultat. Quelques points \u00e0 revoir, mais l\u2019essentiel est l\u00e0.';if(s>=5)return 'R\u00e9sultat correct. Revois les sc\u00e8nes li\u00e9es aux questions manqu\u00e9es.';return 'Reprends la vid\u00e9o de cette partie, puis retente le quiz \u2014 tu vas progresser vite.';}
+function results(){var s=score();setBar(100);var rows='';for(var i=0;i<N;i++){var ok=state.answers[i]===Q[i].a;rows+='<div class="rrow"><span class="mk '+(ok?'y':'n')+'">'+(ok?'\u2713':'\u2717')+'</span><span>Q'+(i+1)+'. '+esc(stripTags(Q[i].q))+'</span></div>';}app.innerHTML='<div class="res"><div class="scorebig">'+s+'<span class="scoremax">/'+N+'</span></div><h2>'+(state.name?esc(state.name)+', ':'')+'voici ton score</h2><div class="msg">'+msgFor(s)+'</div><div class="reslist">'+rows+'</div><div class="resbtns"><button class="btn" id="send">\u2709 Envoyer mes r\u00e9sultats</button><button class="btn ghost" id="retry">\u21ba Recommencer</button><a class="btn ghost" href="partie-'+PART+'.html" style="text-decoration:none;display:inline-flex;align-items:center">\u25b6 Revoir la vid\u00e9o</a><a class="btn ghost" href="index.html" style="text-decoration:none;display:inline-flex;align-items:center">\u2302 Menu</a></div><div class="sent" id="sent">Le bouton ouvre ton logiciel de messagerie, avec un e-mail pr\u00e9-rempli pour '+EMAIL+'.</div></div>';document.getElementById('send').onclick=function(){sendMail(s);};document.getElementById('retry').onclick=function(){state.answers=new Array(N).fill(-1);state.locked=new Array(N).fill(false);state.i=0;question();window.scrollTo(0,0);};window.scrollTo(0,0);}
+function stripTags(s){return (s||'').replace(/<[^>]+>/g,'');}
+function sendMail(s){var who=state.name||'(nom non renseign\u00e9)';var d=new Date();var date=d.toLocaleDateString('fr-FR')+' '+d.toLocaleTimeString('fr-FR');var lines=[];lines.push('Quiz : L\u2019infini en math\u00e9matiques \u2014 Partie '+ROMAN+' ('+TITLE+')');lines.push('\u00c9l\u00e8ve : '+who);lines.push('Date : '+date);lines.push('Score : '+s+' / '+N+' ('+Math.round(s/N*100)+'%)');lines.push('');lines.push('D\u00e9tail des r\u00e9ponses :');for(var i=0;i<N;i++){var ok=state.answers[i]===Q[i].a;var ch=state.answers[i]>=0?String.fromCharCode(65+state.answers[i]):'\u2014';var gd=String.fromCharCode(65+Q[i].a);lines.push((i+1)+'. '+(ok?'OK':'X')+'  r\u00e9ponse: '+ch+(ok?'':' / correct: '+gd)+'  \u2014 '+stripTags(Q[i].q));}var subject='Quiz L\u2019infini \u2014 Partie '+ROMAN+' \u2014 '+who+' \u2014 '+s+'/'+N;var body=lines.join('\n');var href='mailto:'+EMAIL+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);window.location.href=href;document.getElementById('sent').textContent='Si rien ne s\u2019ouvre, copie ton score ('+s+'/'+N+') et envoie-le \u00e0 '+EMAIL+'.';}
+intro();
+})();</script></body></html>
